@@ -255,6 +255,10 @@ public class Options {
         return aRGB;
     }
 
+    public boolean getLaunchActivity() {
+        return options.optBoolean("launchActivity");
+    }
+
     /**
      * Returns numerical icon Value
      *

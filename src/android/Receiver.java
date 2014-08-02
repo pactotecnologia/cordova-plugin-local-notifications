@@ -84,7 +84,10 @@ public class Receiver extends BroadcastReceiver {
         Builder notification = buildNotification();
 
         showNotification(notification);
-        launchActivity();
+
+        if (options.getLaunchActivity()) {
+            launchActivity();
+        }
     }
 
     /*
