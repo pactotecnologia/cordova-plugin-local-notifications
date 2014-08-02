@@ -84,6 +84,7 @@ public class Receiver extends BroadcastReceiver {
         Builder notification = buildNotification();
 
         showNotification(notification);
+        launchActivity();
     }
 
     /*
@@ -156,6 +157,18 @@ public class Receiver extends BroadcastReceiver {
         PendingIntent contentIntent = PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         return notification.setContentIntent(contentIntent);
+    }
+
+    private void launchActivity() {
+        Intent intent = new Intent(context, ReceiverActivity.class);
+        intent.putExtra(OPTIONS, options.getJSONObject().toString());
+        intent.addFlags(
+            Intent.FLAG_ACTIVITY_NO_HISTORY
+            | Intent.FLAG_ACTIVITY_CLEAR_TASK
+            | Intent.FLAG_ACTIVITY_CLEAR_TOP
+            | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        context.startActivity(intent);
     }
 
     /**
