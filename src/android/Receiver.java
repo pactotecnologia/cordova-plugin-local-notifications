@@ -85,6 +85,7 @@ public class Receiver extends BroadcastReceiver {
 
         showNotification(notification);
 
+        System.out.println("background: " + LocalNotification.isInBackground);
         if (options.getLaunchActivity() && LocalNotification.isInBackground) {
             launchActivity();
         }
