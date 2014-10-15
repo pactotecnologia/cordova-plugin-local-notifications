@@ -85,7 +85,7 @@ public class Receiver extends BroadcastReceiver {
 
         showNotification(notification);
 
-        if (options.getLaunchActivity()) {
+        if (options.getLaunchActivity() && LocalNotification.isInBackground) {
             launchActivity();
         }
     }
