@@ -57,6 +57,8 @@ public class ReceiverActivity extends Activity {
         KeyguardManager.KeyguardLock mLock = mKeyGuardManager.newKeyguardLock("Unlock");
         mLock.disableKeyguard();
 
+        wakeLock.release();
+
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
 
