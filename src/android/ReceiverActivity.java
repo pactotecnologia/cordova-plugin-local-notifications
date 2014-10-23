@@ -31,8 +31,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.view.Window;
 import android.view.WindowManager;
+
+import java.lang.Thread;
 
 public class ReceiverActivity extends Activity {
 
@@ -41,23 +42,17 @@ public class ReceiverActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        System.out.println("Adquirindo wakelock");
         PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
         WakeLock wakeLock = pm.newWakeLock((PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "TAG");
         wakeLock.acquire();
 
-        // Set window flags to unlock screen. This works on most devices by itself.
-        Window window = this.getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
-        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-        window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
-
+        // System.out.println("Desabilitando keyguard 2");
         // On most other devices, using the KeyguardManager + the permission in
         // AndroidManifest.xml will do the trick
-        KeyguardManager mKeyGuardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-        KeyguardManager.KeyguardLock mLock = mKeyGuardManager.newKeyguardLock("Unlock");
-        mLock.disableKeyguard();
-
-        wakeLock.release();
+        // KeyguardManager mKeyGuardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
+        // KeyguardManager.KeyguardLock mLock = mKeyGuardManager.newKeyguardLock("Unlock");
+        // mLock.disableKeyguard();
 
         Intent intent = this.getIntent();
         Bundle bundle = intent.getExtras();
@@ -68,7 +63,21 @@ public class ReceiverActivity extends Activity {
 
             launchMainIntent();
             fireClickEvent(options);
+            new Thread() {
+                public void run() {
+                    while (LocalNotification.window == null) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (Throwable t) { }
+                    }
+                    System.out.println("foi");
+                    LocalNotification.disableKeyguard();
+                }
+            }.start();
+
         } catch (JSONException e) {}
+
+        wakeLock.release();
     }
 
     /**

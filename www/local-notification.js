@@ -178,6 +178,18 @@ LocalNotification.prototype = {
         return options.id;
     },
 
+    disableKeyguard: function (callback, scope) {
+        var callbackFn = this.createCallbackFn(callback, scope);
+
+        cordova.exec(callbackFn, null, 'LocalNotification', 'disableKeyguard', []);
+    },
+
+    reenableKeyguard: function (callback, scope) {
+        var callbackFn = this.createCallbackFn(callback, scope);
+
+        cordova.exec(callbackFn, null, 'LocalNotification', 'reenableKeyguard', []);
+    },
+
     /**
      * Cancels the specified notification.
      *

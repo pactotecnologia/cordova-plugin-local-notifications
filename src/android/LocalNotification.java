@@ -35,6 +35,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -42,6 +43,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.view.Window;
+import android.view.WindowManager;
 
 /**
  * This plugin utilizes the Android AlarmManager in combination with StatusBar
@@ -57,6 +60,8 @@ public class LocalNotification extends CordovaPlugin {
     private   static Boolean deviceready = false;
     protected static Context context = null;
     protected static Boolean isInBackground = true;
+    protected static Activity activity = null;
+    protected static Window window = null;
     private   static ArrayList<String> eventQueue = new ArrayList<String>();
 
     @Override
@@ -65,6 +70,8 @@ public class LocalNotification extends CordovaPlugin {
 
         LocalNotification.webView = super.webView;
         LocalNotification.context = super.cordova.getActivity().getApplicationContext();
+        LocalNotification.activity = super.cordova.getActivity();
+        LocalNotification.window = super.cordova.getActivity().getWindow();
     }
 
     @Override
@@ -77,6 +84,24 @@ public class LocalNotification extends CordovaPlugin {
 
                     persist(options.getId(), args);
                     add(options, true);
+                    command.success();
+                }
+            });
+        }
+
+        if (action.equalsIgnoreCase("disableKeyguard")) {
+            cordova.getThreadPool().execute( new Runnable() {
+                public void run() {
+                    disableKeyguard();
+                    command.success();
+                }
+            });
+        }
+
+        if (action.equalsIgnoreCase("reenableKeyguard")) {
+            cordova.getThreadPool().execute( new Runnable() {
+                public void run() {
+                    reenableKeyguard();
                     command.success();
                 }
             });
@@ -179,6 +204,35 @@ public class LocalNotification extends CordovaPlugin {
         }
 
         am.set(AlarmManager.RTC_WAKEUP, triggerTime, pi);
+    }
+
+    public static void disableKeyguard () {
+        if (LocalNotification.window != null) {
+            System.out.println("Desabilitando keyguard 1");
+
+            activity.runOnUiThread(new Runnable() {
+                public void run() {
+                    LocalNotification.window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+                    LocalNotification.window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+                    LocalNotification.window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+                };
+            });
+        }
+
+    }
+
+    public static void reenableKeyguard () {
+        if (LocalNotification.window != null) {
+            System.out.println("Habilitando keyguard 1");
+
+            activity.runOnUiThread(new Runnable() {
+                public void run() {
+                    LocalNotification.window.clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+                    LocalNotification.window.clearFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+                    LocalNotification.window.clearFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+                };
+            });
+        }
     }
 
     /**
