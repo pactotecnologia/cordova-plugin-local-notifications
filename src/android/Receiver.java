@@ -86,12 +86,12 @@ public class Receiver extends BroadcastReceiver {
         }
 
         if (options.getLaunchActivity() && LocalNotification.isInBackground) {
-            Toast toast = Toast.makeText(context, "LaunchActivity", Toast.LENGTH_LONG);
-            toast.show();
+            Toast toast2 = Toast.makeText(context, "LaunchActivity", Toast.LENGTH_LONG);
+            toast2.show();
             launchActivity();
         }else{
-            Toast toast = Toast.makeText(context, "Not LaunchActivity", Toast.LENGTH_LONG);
-            toast.show();
+            Toast toast3 = Toast.makeText(context, "Not LaunchActivity", Toast.LENGTH_LONG);
+            toast3.show();
              Builder notification = buildNotification();
              showNotification(notification);
         }
