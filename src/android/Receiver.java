@@ -58,7 +58,7 @@ public class Receiver extends BroadcastReceiver {
         Bundle bundle   = intent.getExtras();
         JSONObject args;
         
-        Toast toast = Toast.makeText(getApplicationContext(), "Entrou aqui", Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(this, "Entrou aqui", Toast.LENGTH_SHORT);
         toast.show();
 
         try {
@@ -85,11 +85,11 @@ public class Receiver extends BroadcastReceiver {
         }
 
         if (options.getLaunchActivity() && LocalNotification.isInBackground) {
-            Toast toast = Toast.makeText(getApplicationContext(), "LaunchActivity", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, "LaunchActivity", Toast.LENGTH_SHORT);
             toast.show();
             launchActivity();
         }else{
-            Toast toast = Toast.makeText(getApplicationContext(), "Not LaunchActivity", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, "Not LaunchActivity", Toast.LENGTH_SHORT);
             toast.show();
              Builder notification = buildNotification();
              showNotification(notification);
