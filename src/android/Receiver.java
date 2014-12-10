@@ -81,12 +81,11 @@ public class Receiver extends BroadcastReceiver {
             LocalNotification.add(options.moveDate(), false);
         }
 
-        Builder notification = buildNotification();
-
-        showNotification(notification);
-
         if (options.getLaunchActivity() && LocalNotification.isInBackground) {
             launchActivity();
+        }else{
+             Builder notification = buildNotification();
+             showNotification(notification);
         }
     }
 
