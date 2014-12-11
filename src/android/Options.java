@@ -78,6 +78,8 @@ public class Options {
             interval = AlarmManager.INTERVAL_DAY;
         } else if (repeat.equalsIgnoreCase("weekly")) {
             interval = AlarmManager.INTERVAL_DAY*7;
+        } else if ( repeat.equalsIgnoreCase("biweekly")) { 
+             interval = AlarmManager.INTERVAL_DAY*15;
         } else if (repeat.equalsIgnoreCase("monthly")) {
             interval = AlarmManager.INTERVAL_DAY*31; // 31 days
         } else if (repeat.equalsIgnoreCase("yearly")) {
